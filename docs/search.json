@@ -46,7 +46,7 @@
     "href": "assignments/assignment-1.html",
     "title": "Assignment 1",
     "section": "",
-    "text": "1 + 1\n\n[1] 2\n\n\nMy first assignment has two parts."
+    "text": "1 + 1\n\n[1] 2\n\n\nMy first assignment has three parts.\n\n\nI have selected a video from Posit Youtube channel playlist which name is “Create & Publish a Quarto blog on Quarto Pub in 100 Seconds.”\nThis video mainly focuses on creating a Quarto blog.\nThe steps are:\n\nR Studio—&gt; New project—&gt; New directory\nQuarto Blog—&gt;Directory name\nBuild—&gt; Render website\nTerminal—&gt; “quarto publish”\n\n\n\n\n\nPurpose:\nR developed mainly for statistical analysis. Python is a general-purpose programming language.\nCommunity and Libraries:\nPython offers libraries like Pandas, numpy,matplotlib. while R has comprehensive libraries (CRAN) for statistical tools.\nSyntax:\nThere are some major differences between R and Python in terms of syntax.\n\nAssignment Operator(=, &lt;-)\n\nx&lt;-5\nx\n\n[1] 5\n\n\nIndexing\nPower Operator (^,*)"
   },
   {
     "objectID": "assignments.html",
@@ -61,5 +61,19 @@
     "title": "My Blog",
     "section": "",
     "text": "This page is under construction.\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "assignments/assignment-1.html#avideo-selection",
+    "href": "assignments/assignment-1.html#avideo-selection",
+    "title": "Assignment 1",
+    "section": "",
+    "text": "I have selected a video from Posit Youtube channel playlist which name is “Create & Publish a Quarto blog on Quarto Pub in 100 Seconds.”\nThis video mainly focuses on creating a Quarto blog.\nThe steps are:\n\nR Studio—&gt; New project—&gt; New directory\nQuarto Blog—&gt;Directory name\nBuild—&gt; Render website\nTerminal—&gt; “quarto publish”"
+  },
+  {
+    "objectID": "assignments/assignment-1.html#bdifference-between-r-and-python",
+    "href": "assignments/assignment-1.html#bdifference-between-r-and-python",
+    "title": "Assignment 1",
+    "section": "",
+    "text": "Purpose:\nR developed mainly for statistical analysis. Python is a general-purpose programming language.\nCommunity and Libraries:\nPython offers libraries like Pandas, numpy,matplotlib. while R has comprehensive libraries (CRAN) for statistical tools.\nSyntax:\nThere are some major differences between R and Python in terms of syntax.\n\nAssignment Operator(=, &lt;-)\n\nx&lt;-5\nx\n\n[1] 5\n\n\nIndexing\nPower Operator (^,*)"
   }
 ]
