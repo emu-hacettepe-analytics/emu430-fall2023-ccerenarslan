@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -238,6 +238,1088 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2</code></pre>
+</div>
+</div>
+<p>Codes for web scrapping</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># for everything :)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyverse' was built under R version 4.3.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggplot2' was built under R version 4.3.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyr' was built under R version 4.3.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'readr' was built under R version 4.3.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'purrr' was built under R version 4.3.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'dplyr' was built under R version 4.3.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'forcats' was built under R version 4.3.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'lubridate' was built under R version 4.3.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.3     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.4     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest) <span class="co"># for HTML scraping</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'rvest' was built under R version 4.3.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'rvest'
+
+The following object is masked from 'package:readr':
+
+    guess_encoding</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr) <span class="co">#</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>url1<span class="ot">&lt;-</span><span class="st">"https://m.imdb.com/search/title/?title_type=feature&amp;release_date=2010-01-01,2023-12-31&amp;num_votes=2500,&amp;country_of_origin=TR&amp;count=250"</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>read<span class="ot">&lt;-</span><span class="fu">read_html</span>(url1)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>title_names <span class="ot">&lt;-</span> <span class="fu">html_nodes</span>(read,<span class="st">'.ipc-title__text'</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>title_names <span class="ot">&lt;-</span> <span class="fu">html_text</span>(title_names)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>title_names <span class="ot">&lt;-</span> <span class="fu">tail</span>(<span class="fu">head</span>(title_names,<span class="sc">-</span><span class="dv">1</span>),<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>title_names <span class="ot">&lt;-</span> <span class="fu">str_split</span>(title_names, <span class="st">" "</span>, <span class="at">n=</span><span class="dv">2</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>title_names <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">lapply</span>(title_names, <span class="cf">function</span>(x) {x[<span class="dv">2</span>]}))</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>rate<span class="ot">&lt;-</span> <span class="fu">html_nodes</span>(read,<span class="st">'.ratingGroup--imdb-rating'</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>rate<span class="ot">&lt;-</span> <span class="fu">html_text</span>(rate)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>year<span class="ot">&lt;-</span><span class="fu">html_nodes</span>(read,<span class="st">'.sc-43986a27-8.jHYIIK.dli-title-metadata-item:nth-child(1)'</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">html_text</span>(year)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>duration<span class="ot">&lt;-</span><span class="fu">html_nodes</span>(read,<span class="st">'.sc-43986a27-8.jHYIIK.dli-title-metadata-item:nth-child(2)'</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>duration<span class="ot">&lt;-</span> <span class="fu">html_text</span>(duration)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>votes<span class="ot">&lt;-</span><span class="fu">html_nodes</span>(read,<span class="st">'.kRnqtn'</span>)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>votes<span class="ot">&lt;-</span> <span class="fu">html_text</span>(votes)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>url2<span class="ot">&lt;-</span><span class="st">"https://m.imdb.com/search/title/?title_type=feature&amp;release_date=,2009-12-31&amp;num_votes=2500,&amp;country_of_origin=TR&amp;count=250"</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>read<span class="ot">&lt;-</span><span class="fu">read_html</span>(url2)</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>title_names2 <span class="ot">&lt;-</span>  <span class="fu">html_nodes</span>(read,<span class="st">'.ipc-title__text'</span>)</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>title_names2 <span class="ot">&lt;-</span> <span class="fu">html_text</span>(title_names2)</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>title_names2 <span class="ot">&lt;-</span> <span class="fu">tail</span>(<span class="fu">head</span>(title_names2,<span class="sc">-</span><span class="dv">1</span>),<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>title_names2 <span class="ot">&lt;-</span> <span class="fu">str_split</span>(title_names2, <span class="st">" "</span>, <span class="at">n=</span><span class="dv">2</span>)</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>title_names2 <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">lapply</span>(title_names2, <span class="cf">function</span>(x) {x[<span class="dv">2</span>]}))</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>rate2<span class="ot">&lt;-</span> <span class="fu">html_nodes</span>(read,<span class="st">'.ratingGroup--imdb-rating'</span>)</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>rate2<span class="ot">&lt;-</span> <span class="fu">html_text</span>(rate2)</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>year2<span class="ot">&lt;-</span><span class="fu">html_nodes</span>(read,<span class="st">'.sc-43986a27-8.jHYIIK.dli-title-metadata-item:nth-child(1)'</span>)</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>year2<span class="ot">&lt;-</span> <span class="fu">html_text</span>(year2)</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>duration2<span class="ot">&lt;-</span><span class="fu">html_nodes</span>(read,<span class="st">'.sc-43986a27-8.jHYIIK.dli-title-metadata-item:nth-child(2)'</span>)</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>duration2<span class="ot">&lt;-</span> <span class="fu">html_text</span>(duration2)</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>votes2<span class="ot">&lt;-</span><span class="fu">html_nodes</span>(read,<span class="st">'.kRnqtn'</span>)</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>votes2<span class="ot">&lt;-</span> <span class="fu">html_text</span>(votes2)</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>total_title<span class="ot">&lt;-</span><span class="fu">c</span>(title_names,title_names2)</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>total_rate<span class="ot">&lt;-</span><span class="fu">c</span>(rate,rate2)</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>total_year<span class="ot">&lt;-</span><span class="fu">c</span>(year,year2)</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>total_duration<span class="ot">&lt;-</span><span class="fu">c</span>(duration,duration2)</span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>time_string <span class="ot">&lt;-</span> total_duration</span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>hours <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">"[^0-9]"</span>, <span class="st">""</span>, <span class="fu">regmatches</span>(time_string, <span class="fu">regexpr</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d+h"</span>, time_string))))</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>minutes <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">"[^0-9]"</span>, <span class="st">""</span>, <span class="fu">regmatches</span>(time_string, <span class="fu">regexpr</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d+m"</span>, time_string))))</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>total_minutes <span class="ot">&lt;-</span> hours <span class="sc">*</span> <span class="dv">60</span> <span class="sc">+</span> minutes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in hours * 60 + minutes: uzun olan nesne uzunluğu kısa olan nesne
+uzunluğunun bir katı değil</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Equivalent minutes:"</span>, total_minutes, <span class="st">"m</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Equivalent minutes: 197 91 132 117 113 107 196 135 114 125 129 188 157 134 97 79 104 136 116 145 112 90 124 112 165 106 110 105 129 86 97 96 97 109 101 105 107 119 139 124 96 138 130 105 151 126 141 105 104 142 112 121 133 175 80 177 93 101 107 76 175 94 118 73 134 177 109 105 106 113 96 61 153 65 145 113 108 106 114 61 164 113 112 100 99 98 110 118 66 168 177 104 119 92 105 96 100 112 160 115 95 102 110 178 100 112 104 113 65 110 95 66 115 166 109 106 166 97 92 115 112 110 104 64 105 110 101 91 174 114 104 90 99 116 95 100 113 116 114 108 104 106 108 115 114 64 114 119 103 111 110 117 163 172 105 107 96 106 110 98 90 101 106 102 119 98 102 103 65 66 106 105 103 110 90 105 165 165 113 65 100 90 114 114 95 67 105 155 94 165 108 100 114 157 101 105 93 99 103 97 102 116 107 164 90 118 158 100 96 109 108 108 66 104 90 90 109 118 102 93 167 102 109 111 106 93 96 116 155 101 70 114 73 88 95 96 91 116 68 108 110 103 110 68 67 86 147 109 92 67 80 179 173 62 107 112 110 157 170 107 99 151 90 92 75 106 102 90 100 110 92 68 150 70 63 98 90 90 89 85 145 80 157 158 96 90 100 107 92 82 157 160 62 101 99 88 119 99 117 75 147 86 97 155 101 88 62 80 114 83 117 105 62 97 93 105 103 155 106 100 102 95 94 149 105 90 175 85 119 95 112 90 75 175 100 85 111 77 90 83 89 145 102 100 97 113 152 91 119 95 104 70 106 72 100 76 85 95 111 116 105 74 94 87 84 157 61 112 113 98 77 66 92 81 110 87 154 100 93 100 84 141 79 91 105 68 151 77 97 112 100 89 87 79 88 96 81 84 118 85 150 115 159 65 93 107 93 88 85 81 90 92 71 79 87 77 93 94 142 85 83 109 82 76 99 100 113 92 83 81 78 86 96 86 96 89 107 87 93 90 77 82 83 90 83 87 67 89 79 94 79 113 88 77 91 72 117 113 107 76 75 114 65 69 68 97 74 97 m</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(total_minutes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] 197  91 132 117 113 107 196 135 114 125 129 188 157 134  97  79 104 136
+ [19] 116 145 112  90 124 112 165 106 110 105 129  86  97  96  97 109 101 105
+ [37] 107 119 139 124  96 138 130 105 151 126 141 105 104 142 112 121 133 175
+ [55]  80 177  93 101 107  76 175  94 118  73 134 177 109 105 106 113  96  61
+ [73] 153  65 145 113 108 106 114  61 164 113 112 100  99  98 110 118  66 168
+ [91] 177 104 119  92 105  96 100 112 160 115  95 102 110 178 100 112 104 113
+[109]  65 110  95  66 115 166 109 106 166  97  92 115 112 110 104  64 105 110
+[127] 101  91 174 114 104  90  99 116  95 100 113 116 114 108 104 106 108 115
+[145] 114  64 114 119 103 111 110 117 163 172 105 107  96 106 110  98  90 101
+[163] 106 102 119  98 102 103  65  66 106 105 103 110  90 105 165 165 113  65
+[181] 100  90 114 114  95  67 105 155  94 165 108 100 114 157 101 105  93  99
+[199] 103  97 102 116 107 164  90 118 158 100  96 109 108 108  66 104  90  90
+[217] 109 118 102  93 167 102 109 111 106  93  96 116 155 101  70 114  73  88
+[235]  95  96  91 116  68 108 110 103 110  68  67  86 147 109  92  67  80 179
+[253] 173  62 107 112 110 157 170 107  99 151  90  92  75 106 102  90 100 110
+[271]  92  68 150  70  63  98  90  90  89  85 145  80 157 158  96  90 100 107
+[289]  92  82 157 160  62 101  99  88 119  99 117  75 147  86  97 155 101  88
+[307]  62  80 114  83 117 105  62  97  93 105 103 155 106 100 102  95  94 149
+[325] 105  90 175  85 119  95 112  90  75 175 100  85 111  77  90  83  89 145
+[343] 102 100  97 113 152  91 119  95 104  70 106  72 100  76  85  95 111 116
+[361] 105  74  94  87  84 157  61 112 113  98  77  66  92  81 110  87 154 100
+[379]  93 100  84 141  79  91 105  68 151  77  97 112 100  89  87  79  88  96
+[397]  81  84 118  85 150 115 159  65  93 107  93  88  85  81  90  92  71  79
+[415]  87  77  93  94 142  85  83 109  82  76  99 100 113  92  83  81  78  86
+[433]  96  86  96  89 107  87  93  90  77  82  83  90  83  87  67  89  79  94
+[451]  79 113  88  77  91  72 117 113 107  76  75 114  65  69  68  97  74  97</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#print(total_duration)</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>totall_votes<span class="ot">&lt;-</span><span class="fu">c</span>(votes,votes2)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>original_string <span class="ot">&lt;-</span> totall_votes</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>numeric_part <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"[^0-9,]"</span>, <span class="st">""</span>, original_string)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Numeric part:"</span>, numeric_part, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Numeric part: 5,023 7,272 54,123 3,374 3,328 30,234 54,606 109,854 8,752 42,978 11,136 26,973 49,329 7,099 12,099 15,600 2,574 13,890 3,502 5,854 4,468 23,107 5,149 19,205 58,910 26,553 14,316 4,740 2,772 8,435 3,078 5,026 5,818 3,628 2,511 2,836 10,052 4,207 46,992 25,643 13,413 23,748 13,029 5,933 5,612 7,279 13,643 25,119 13,126 4,411 2,717 15,817 6,786 4,273 4,364 36,251 15,761 2,585 3,383 10,481 19,945 7,405 14,112 12,890 6,361 35,449 12,110 6,281 3,332 23,506 4,877 11,265 5,806 3,699 4,065 2,945 4,991 5,752 3,098 43,224 3,486 3,717 4,706 4,007 2,785 9,513 6,496 10,396 19,474 6,387 4,129 4,653 3,397 5,506 15,441 7,944 4,782 2,955 3,183 11,157 39,265 3,590 2,875 5,006 10,464 2,986 13,671 5,000 5,733 3,770 9,137 4,540 5,485 38,561 5,360 9,424 11,215 7,474 10,856 3,468 2,611 3,728 6,854 5,483 15,301 7,867 55,882 2,616 3,088 3,273 6,750 3,195 6,093 7,827 7,648 3,931 5,158 5,411 9,175 5,257 13,409 20,790 2,597 3,847 3,538 4,193 5,425 3,119 3,845 73,971 3,525 7,478 3,208 5,218 20,976 4,319 4,589 4,645 3,013 18,075 16,476 2,630 7,914 3,656 2,833 2,706 8,620 5,456 13,535 5,092 2,823 7,295 2,693 3,472 3,045 7,418 6,089 4,161 15,363 9,584 5,159 6,049 3,152 5,178 5,506 2,557 7,922 2,945 10,228 4,276 2,665 17,574 3,565 3,128 3,608 3,046 3,885 3,569 9,920 3,936 6,774 18,158 5,438 9,531 5,633 4,862 3,921 3,595 5,417 5,191 3,719 4,856 21,430 3,420 3,255 7,194 2,650 4,539 3,044 4,451 3,458 4,127 2,840 6,954 4,770 4,828 3,930 2,569 3,511 2,860 2,964 4,015 7,138 3,629 3,451 3,567 4,302 4,858 5,344 3,950 2,670 27,602 3,297 2,657 20,606 2,639 3,699 2,565 34,998 91,008 19,258 16,219 22,357 71,692 44,620 7,116 42,505 22,640 14,676 66,015 23,622 6,702 22,324 18,250 14,301 37,770 4,733 13,993 38,393 27,111 22,659 8,014 24,325 3,156 11,718 10,845 35,013 15,713 16,719 3,911 16,704 4,255 12,396 18,533 6,625 4,119 13,648 5,488 28,349 6,056 6,417 2,662 11,250 10,571 21,178 5,592 7,087 3,455 3,211 13,498 22,327 3,361 10,404 5,288 3,497 34,166 16,132 6,736 6,089 11,507 6,863 4,382 4,199 6,437 3,313 6,459 11,803 4,442 10,560 5,129 20,882 7,029 17,124 5,256 3,640 5,817 7,506 3,026 10,023 7,795 3,715 3,386 8,139 3,899 6,489 12,603 24,366 2,805 3,249 9,840 3,201 3,139 10,093 3,273 9,737 4,348 2,553 2,625 13,074 7,336 4,242 7,075 16,371 7,215 4,759 6,174 6,055 3,639 3,314 7,522 18,634 4,024 8,299 11,644 3,817 3,789 5,253 2,844 4,239 3,635 3,630 9,550 7,351 3,921 4,371 4,026 9,615 4,935 5,445 20,637 11,019 13,356 7,589 3,430 2,938 6,232 8,695 3,000 6,801 7,211 3,403 2,791 4,067 9,202 3,708 4,946 6,540 7,474 6,184 2,577 4,111 2,601 3,290 2,997 2,766 4,276 7,786 7,218 2,617 3,726 3,419 3,829 4,270 8,948 7,832 6,961 2,631 2,712 2,805 3,019 2,741 3,707 4,660 2,819 8,938 3,468 3,086 6,745 3,528 4,381 5,932 4,601 4,367 7,352 2,712 4,954 4,136 3,247 4,832 3,037 3,138 2,561 7,047 3,431 2,901 3,152 3,933 2,736 4,460 4,553 3,218 3,258 3,782 3,902 3,284 2,971 2,677 6,251 6,576 5,134 2,735 3,582 5,550 2,710 4,347 4,090 2,710 3,026 3,907 3,498 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name=</span>total_title,<span class="at">rate=</span>total_rate,<span class="at">vote=</span>numeric_part,<span class="at">year=</span>total_year,<span class="at">duration=</span>total_duration)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                            name       rate    vote year
+1                              Kuru Otlar Üstüne   8.1&nbsp;(5K)   5,023 2023
+2                        Istanbul Için Son Çagri 5.3&nbsp;(7.3K)   7,272 2023
+3                       Yedinci Kogustaki Mucize  8.2&nbsp;(54K)  54,123 2019
+4                                 Ölümlü Dünya 2 7.5&nbsp;(3.4K)   3,374 2023
+5                                         Bihter 3.6&nbsp;(3.3K)   3,328 2023
+6                                   Ölümlü Dünya  7.6&nbsp;(30K)  30,234 2018
+7                                     Kis Uykusu  8.0&nbsp;(55K)  54,606 2014
+8                                         Dag II 8.2&nbsp;(110K) 109,854 2016
+9                                 Do Not Disturb 6.3&nbsp;(8.8K)   8,752 2023
+10                     Ayla: The Daughter of War  8.3&nbsp;(43K)  42,978 2017
+11                                  Kurak Günler  7.6&nbsp;(11K)  11,136 2022
+12                                   Ahlat Agaci  8.0&nbsp;(27K)  26,973 2018
+13                       Bir Zamanlar Anadolu'da  7.8&nbsp;(49K)  49,329 2011
+14                           Dabbe: Cin Çarpmasi 6.8&nbsp;(7.1K)   7,099 2013
+15                                        Baskin  5.8&nbsp;(12K)  12,099 2015
+16                                          Kedi  7.6&nbsp;(16K)  15,600 2016
+17                                   Sen Inandir 5.6&nbsp;(2.6K)   2,574 2023
+18                                        Mucize  7.6&nbsp;(14K)  13,890 2015
+19                                    Fort Bliss 6.4&nbsp;(3.5K)   3,502 2014
+20                                        Bergen 6.9&nbsp;(5.9K)   5,854 2022
+21                                     Boga Boga 5.7&nbsp;(4.5K)   4,468 2023
+22                                           Dag  7.5&nbsp;(23K)  23,107 2012
+23                            Iyi Adamin 10 Günü 6.5&nbsp;(5.1K)   5,149 2023
+24                                  Cinayet Süsü  6.7&nbsp;(19K)  19,205 2019
+25                                    Fetih 1453  6.5&nbsp;(59K)  58,910 2012
+26                        The Ottoman Lieutenant  6.4&nbsp;(27K)  26,553 2017
+27                                      Limonata  7.4&nbsp;(14K)  14,316 2015
+28                              Illegal Hayatlar 6.2&nbsp;(4.7K)   4,740 2023
+29                                 Mucize 2: Ask 7.2&nbsp;(2.8K)   2,772 2019
+30                          Kötü Kedi Serafettin 7.0&nbsp;(8.4K)   8,435 2016
+31                                 Aaahh Belinda 5.3&nbsp;(3.1K)   3,078 2023
+32                                        Siccîn   6.0&nbsp;(5K)   5,026 2014
+33                                Ask Taktikleri 5.3&nbsp;(5.8K)   5,818 2022
+34                                      Can Feda 5.5&nbsp;(3.6K)   3,628 2018
+35                        Insanlar Ikiye Ayrilir 6.9&nbsp;(2.5K)   2,511 2020
+36                                      Tereddüt 6.5&nbsp;(2.8K)   2,836 2016
+37                                       Yeralti  7.1&nbsp;(10K)  10,052 2012
+38                         D@bbe: Bir Cin Vakasi 5.8&nbsp;(4.2K)   4,207 2012
+39                        CM101MMXI Fundamentals  9.1&nbsp;(47K)  46,992 2013
+40                                 Aile Arasinda  7.6&nbsp;(26K)  25,643 2017
+41                             Kagittan Hayatlar  6.6&nbsp;(13K)  13,413 2021
+42                              Kelebegin Rüyasi  7.7&nbsp;(24K)  23,748 2013
+43                           Bizim Için Sampiyon  8.2&nbsp;(13K)  13,029 2018
+44                                    Sadece Sen 7.3&nbsp;(5.9K)   5,933 2014
+45                                          Cici 7.1&nbsp;(5.6K)   5,612 2022
+46                               Ikimizin Yerine 6.1&nbsp;(7.3K)   7,279 2016
+47                Cep Herkülü: Naim Süleymanoglu  8.2&nbsp;(14K)  13,643 2019
+48                            Kaybedenler Kulübü  7.5&nbsp;(25K)  25,119 2011
+49                                      Sarmasik  7.9&nbsp;(13K)  13,126 2015
+50                                Yilbasi Gecesi 5.8&nbsp;(4.4K)   4,411 2022
+51                                       Bulanti 6.2&nbsp;(2.7K)   2,717 2015
+52                 Organize Isler: Sazan Sarmali  6.0&nbsp;(16K)  15,817 2019
+53                                 Bursa Bülbülü 6.8&nbsp;(6.8K)   6,786 2023
+54                             Dabbe: Zehr-i Cin 5.9&nbsp;(4.3K)   4,273 2014
+55                                          Daha 7.0&nbsp;(4.4K)   4,364 2017
+56                                    Av Mevsimi  7.4&nbsp;(36K)  36,251 2010
+57                                    Kelebekler  7.3&nbsp;(16K)  15,761 2018
+58                                    Kar ve Ayi 6.6&nbsp;(2.6K)   2,585 2022
+59                                     Geçen Yaz 6.3&nbsp;(3.4K)   3,383 2021
+60                      Sen Aydinlatirsin Geceyi  7.7&nbsp;(10K)  10,481 2013
+61                                        Müslüm  7.6&nbsp;(20K)  19,945 2018
+62                                  Aykut Eniste 7.0&nbsp;(7.4K)   7,405 2019
+63                                  Incir Reçeli  6.5&nbsp;(14K)  14,112 2011
+64                             Unutursam Fisilda  7.5&nbsp;(13K)  12,890 2014
+65                                Recep Ivedik 7 5.2&nbsp;(6.4K)   6,361 2022
+66                                   Pek Yakinda  7.3&nbsp;(35K)  35,449 2014
+67                                       Delibal  6.7&nbsp;(12K)  12,110 2015
+68                                    Nuh Tepesi 7.1&nbsp;(6.3K)   6,281 2019
+69                         Kurtlar Vadisi: Vatan 3.9&nbsp;(3.3K)   3,332 2017
+70                                  Dügün Dernek  6.9&nbsp;(24K)  23,506 2013
+71                                    Su ve Ates 6.1&nbsp;(4.9K)   4,877 2013
+72                                       Azizler  6.0&nbsp;(11K)  11,265 2021
+73                                  Biz Böyleyiz 5.6&nbsp;(5.8K)   5,806 2020
+74                                      Siccin 2 6.1&nbsp;(3.7K)   3,699 2015
+75                                      Panzehir 6.9&nbsp;(4.1K)   4,065 2014
+76                                   Okul tirasi 7.4&nbsp;(2.9K)   2,945 2021
+77                                Hedefim Sensin   6.2&nbsp;(5K)   4,991 2018
+78                               Mutluluk Zamani 5.9&nbsp;(5.8K)   5,752 2017
+79                             Bir Ask Iki Hayat 6.1&nbsp;(3.1K)   3,098 2019
+80                               Celal ile Ceren  3.1&nbsp;(43K)  43,224 2013
+81                                       Deliler 5.1&nbsp;(3.5K)   3,486 2018
+82                              Sen Yasamaya Bak 5.7&nbsp;(3.7K)   3,717 2022
+83                                  Cingöz Recai 4.8&nbsp;(4.7K)   4,706 2017
+84                                Babamin Kemani   6.4&nbsp;(4K)   4,007 2022
+85                                Aci Tatli Eksi 6.0&nbsp;(2.8K)   2,785 2017
+86                    Enes Batur Gerçek Kahraman 1.4&nbsp;(9.5K)   9,513 2019
+87                                     Sag Salim 6.3&nbsp;(6.5K)   6,496 2012
+88                Behzat Ç.: Seni Kalbime Gömdüm  7.5&nbsp;(10K)  10,396 2011
+89                         Ask Tesadüfleri Sever  7.2&nbsp;(19K)  19,474 2011
+90                                        Çiçero 6.5&nbsp;(6.4K)   6,387 2019
+91                                Annemin Yarasi 7.3&nbsp;(4.1K)   4,129 2016
+92                                 Kiz Kardesler 7.4&nbsp;(4.7K)   4,653 2019
+93                             Senden Bana Kalan 6.5&nbsp;(3.4K)   3,397 2015
+94                             Ise Yarar Bir Sey 7.6&nbsp;(5.5K)   5,506 2017
+95                        New York'ta Bes Minare  5.7&nbsp;(15K)  15,441 2010
+96                              Kolpaçino: Bomba 5.8&nbsp;(7.9K)   7,944 2011
+97                                           Kin 5.5&nbsp;(4.8K)   4,782 2021
+98                      Kaybedenler Kulübü Yolda   5.7&nbsp;(3K)   2,955 2018
+99                                 Dabbe (Dab6e) 5.6&nbsp;(3.2K)   3,183 2015
+100                       Dügün Dernek 2: Sünnet  6.3&nbsp;(11K)  11,157 2015
+101               Cumali Ceber: Allah Seni Alsin  1.0&nbsp;(39K)  39,265 2017
+102                               Aykut Eniste 2 6.5&nbsp;(3.6K)   3,590 2021
+103                                        Sibel 6.8&nbsp;(2.9K)   2,875 2018
+104                               Kardesim Benim   5.8&nbsp;(5K)   5,006 2016
+105                   Karakomik Filmler: Kaçamak  5.5&nbsp;(10K)  10,464 2019
+106                              Asiklar Bayrami   5.7&nbsp;(3K)   2,986 2022
+107                                 Itirazim Var  7.7&nbsp;(14K)  13,671 2014
+108                             Eltilerin Savasi   5.8&nbsp;(5K)   5,000 2020
+109                                 Benim Dünyam 7.5&nbsp;(5.7K)   5,733 2013
+110                                Hadi Be Oglum 7.0&nbsp;(3.8K)   3,770 2018
+111                      Karakomik Filmler: Deli 6.5&nbsp;(9.1K)   9,137 2020
+112                                  Küçük Esnaf 5.6&nbsp;(4.5K)   4,540 2016
+113               Sen Hiç Ates Böcegi Gördün Mü? 6.2&nbsp;(5.5K)   5,485 2021
+114                                   Arif V 216  7.0&nbsp;(39K)  38,561 2018
+115                          Kolonya Cumhuriyeti 5.8&nbsp;(5.4K)   5,360 2017
+116                            Cebimdeki Yabanci 6.8&nbsp;(9.4K)   9,424 2018
+117                            Dedemin Insanlari  8.0&nbsp;(11K)  11,215 2011
+118                                Yol Arkadasim 6.1&nbsp;(7.5K)   7,474 2017
+119                      Bi Küçük Eylül Meselesi  7.1&nbsp;(11K)  10,856 2014
+120                                      Görümce 5.0&nbsp;(3.5K)   3,468 2016
+121                   Sen Kiminle Dans Ediyorsun 5.6&nbsp;(2.6K)   2,611 2017
+122            Fakat Müzeyyen Bu Derin Bir Tutku 6.6&nbsp;(3.7K)   3,728 2014
+123                     Behzat Ç. Ankara Yaniyor 7.4&nbsp;(6.9K)   6,854 2013
+124                                 Tamam miyiz? 7.0&nbsp;(5.5K)   5,483 2013
+125                               Iftarlik Gazoz  7.3&nbsp;(15K)  15,301 2016
+126                                 9 Kere Leyla 3.7&nbsp;(7.9K)   7,867 2020
+127               Enes Batur Hayal mi Gerçek mi?  2.0&nbsp;(56K)  55,882 2018
+128                                        Selam 6.2&nbsp;(2.6K)   2,616 2013
+129                                 Beni Çok Sev 7.0&nbsp;(3.1K)   3,088 2021
+130                          Zaman Makinesi 1973 6.3&nbsp;(3.3K)   3,273 2014
+131                           Istanbul Kirmizisi 5.6&nbsp;(6.8K)   6,750 2017
+132              Bizans Oyunlari: Geym of Bizans 3.7&nbsp;(3.2K)   3,195 2016
+133                                  Evim Sensin 5.0&nbsp;(6.1K)   6,093 2012
+134                                 Eksi Elmalar 7.1&nbsp;(7.8K)   7,827 2016
+135                    Karakomik Filmler: Emanet 5.6&nbsp;(7.6K)   7,648 2020
+136                                     Iyi Oyun 4.5&nbsp;(3.9K)   3,931 2018
+137                  Çok Filim Hareketler Bunlar 4.5&nbsp;(5.2K)   5,158 2010
+138                             Yarina Tek Bilet 5.6&nbsp;(5.4K)   5,411 2020
+139                                Hükümet Kadin 6.5&nbsp;(9.2K)   9,175 2013
+140                            Çakallarla Dans 6 5.3&nbsp;(5.3K)   5,257 2022
+141                   Karakomik Filmler: 2 Arada  6.4&nbsp;(13K)  13,409 2019
+142                               Recep Ivedik 3  4.2&nbsp;(21K)  20,790 2010
+143                                  Vay Arkadas 6.3&nbsp;(2.6K)   2,597 2010
+144                            Sevimli Tehlikeli 6.0&nbsp;(3.8K)   3,847 2015
+145                                  Baba Parasi 4.6&nbsp;(3.5K)   3,538 2020
+146                              Bayi Toplantisi 4.6&nbsp;(4.2K)   4,193 2020
+147                            Kocan Kadar Konus 6.1&nbsp;(5.4K)   5,425 2015
+148                                     Deli Ask 5.5&nbsp;(3.1K)   3,119 2017
+149                       Hababam Sinifi Yeniden 2.2&nbsp;(3.8K)   3,845 2019
+150                                         Reis  1.0&nbsp;(74K)  73,971 2017
+151                              Ask Sana Benzer 3.8&nbsp;(3.5K)   3,525 2015
+152                                         Veda 7.2&nbsp;(7.5K)   7,478 2010
+153                      Ask Tesadüfleri Sever 2 7.1&nbsp;(3.2K)   3,208 2020
+154                            Türk Isi Dondurma 6.4&nbsp;(5.2K)   5,218 2019
+155                        Ali Baba ve 7 Cüceler  5.6&nbsp;(21K)  20,976 2015
+156                                       Abluka 7.2&nbsp;(4.3K)   4,319 2015
+157                               Incir Reçeli 2 6.0&nbsp;(4.6K)   4,589 2014
+158                                         Börü 6.7&nbsp;(4.6K)   4,645 2018
+159                          Siccîn 3: Cürmü Ask   6.1&nbsp;(3K)   3,013 2016
+160                               Recep Ivedik 4  3.8&nbsp;(18K)  18,075 2014
+161                           Bana Masal Anlatma  7.3&nbsp;(16K)  16,476 2015
+162                               Bir Baba Hindu 2.6&nbsp;(2.6K)   2,630 2016
+163                               Eyyvah Eyvah 3 5.9&nbsp;(7.9K)   7,914 2014
+164                                Kaçma Birader 6.8&nbsp;(3.7K)   3,656 2016
+165                             Gözetleme Kulesi 7.1&nbsp;(2.8K)   2,833 2012
+166                           Kurtulus Son Durak 6.2&nbsp;(2.7K)   2,706 2012
+167                               Recep Ivedik 6 3.0&nbsp;(8.6K)   8,620 2019
+168                     Kutsal Damacana 2: Itmen 3.0&nbsp;(5.5K)   5,456 2010
+169                                  Çalgi Çengi  7.0&nbsp;(14K)  13,535 2011
+170                         Çanakkale Yolun Sonu 7.1&nbsp;(5.1K)   5,092 2013
+171                                     Deliha 2 4.7&nbsp;(2.8K)   2,823 2018
+172                              Çakallarla Dans 5.6&nbsp;(7.3K)   7,295 2010
+173                             Yolun Açik Olsun 6.5&nbsp;(2.7K)   2,693 2022
+174                      Sag Salim 2: Sil Bastan 4.9&nbsp;(3.5K)   3,472 2014
+175             Çakallarla Dans 3: Sifir Sikinti   5.0&nbsp;(3K)   3,045 2014
+176                                          Bal 7.1&nbsp;(7.4K)   7,418 2010
+177                                  Uzun Hikâye 7.5&nbsp;(6.1K)   6,089 2012
+178                       Selam: Bahara Yolculuk 7.1&nbsp;(4.2K)   4,161 2015
+179                               Eyyvah Eyvah 2  6.6&nbsp;(15K)  15,363 2011
+180                                    Kara Bela 6.7&nbsp;(9.6K)   9,584 2015
+181                                Sofra Sirlari 6.7&nbsp;(5.2K)   5,159 2017
+182                                     Çogunluk   7.4&nbsp;(6K)   6,049 2010
+183                    Sümela'nin Sifresi: Temel 3.7&nbsp;(3.2K)   3,152 2011
+184                              Hükümet Kadin 2 6.1&nbsp;(5.2K)   5,178 2013
+185                                 Ejder Kapani 6.5&nbsp;(5.5K)   5,506 2010
+186                                     Ya Sonra 5.2&nbsp;(2.6K)   2,557 2011
+187                             Ailecek Saskiniz 6.1&nbsp;(7.9K)   7,922 2018
+188                                   Kötü Çocuk 2.0&nbsp;(2.9K)   2,945 2017
+189                               Cumali Ceber 2  1.2&nbsp;(10K)  10,228 2018
+190                                   Yol Ayrimi 6.7&nbsp;(4.3K)   4,276 2017
+191                                   Sonsuz Ask 6.1&nbsp;(2.7K)   2,665 2017
+192                               Recep Ivedik 5  3.3&nbsp;(18K)  17,574 2017
+193                                Tatlim Tatlim 5.6&nbsp;(3.6K)   3,565 2017
+194                          Güzelligin Portresi 6.3&nbsp;(3.1K)   3,128 2019
+195                                       Kayhan 2.2&nbsp;(3.6K)   3,608 2018
+196                              Kafalar Karisik   3.0&nbsp;(3K)   3,046 2018
+197                                 Tepenin Ardi 7.2&nbsp;(3.9K)   3,885 2012
+198            Romantik Komedi 2: Bekarliga Veda 5.2&nbsp;(3.6K)   3,569 2013
+199                                        Müjde 1.2&nbsp;(9.9K)   9,920 2022
+200                                 Dedemin Fisi 5.6&nbsp;(3.9K)   3,936 2016
+201                              Osman Pazarlama 3.5&nbsp;(6.8K)   6,774 2016
+202                                 Bizim Hikaye  5.4&nbsp;(18K)  18,158 2015
+203                                  Sen Kimsin? 5.0&nbsp;(5.4K)   5,438 2012
+204                     Kurtlar Vadisi: Filistin 6.1&nbsp;(9.5K)   9,531 2011
+205                           Anadolu Kartallari 6.2&nbsp;(5.6K)   5,633 2011
+206                           Kolpaçino 3. Devre 4.1&nbsp;(4.9K)   4,862 2016
+207                                    Yok Artik 5.8&nbsp;(3.9K)   3,921 2015
+208             Hür Adam: Bediüzzaman Said Nursi 4.6&nbsp;(3.6K)   3,595 2011
+209                             G.D.O. Kara Kedi 5.3&nbsp;(5.4K)   5,417 2013
+210                                    Ay Lav Yu 5.5&nbsp;(5.2K)   5,191 2010
+211                              Yol Arkadasim 2 5.9&nbsp;(3.7K)   3,719 2018
+212                                       Deliha 4.6&nbsp;(4.9K)   4,856 2014
+213                                 Eyyvah Eyvah  7.0&nbsp;(21K)  21,430 2010
+214 Celal Tan ve Ailesinin Asiri Acikli Hikayesi 6.4&nbsp;(3.4K)   3,420 2011
+215                                 Ali Kundilli 5.4&nbsp;(3.3K)   3,255 2015
+216                               Berlin Kaplani 5.2&nbsp;(7.2K)   7,194 2012
+217                                  Sabit Kanca 3.1&nbsp;(2.7K)   2,650 2013
+218                                  Gise Memuru 6.4&nbsp;(4.5K)   4,539 2010
+219                            Çakallarla Dans 4   4.1&nbsp;(3K)   3,044 2016
+220                                 Olanlar Oldu 6.2&nbsp;(4.5K)   4,451 2017
+221                   Kocan Kadar Konus: Dirilis 5.7&nbsp;(3.5K)   3,458 2016
+222                            Birlesen Gönüller 7.5&nbsp;(4.1K)   4,127 2014
+223                                 Zenne Dancer 7.1&nbsp;(2.8K)   2,840 2011
+224                                  OHA Diyorum   1.6&nbsp;(7K)   6,954 2017
+225                                    Borç Harç 1.4&nbsp;(4.8K)   4,770 2019
+226                             Mandira Filozofu 6.6&nbsp;(4.8K)   4,828 2014
+227                                 Nadide Hayat 6.3&nbsp;(3.9K)   3,930 2015
+228                            Çakallarla Dans 5 3.8&nbsp;(2.6K)   2,569 2018
+229                                 Yozgat Blues 6.8&nbsp;(3.5K)   3,511 2013
+230                                 Bizi Hatirla 7.4&nbsp;(2.9K)   2,860 2018
+231                        Sen Benim HerSeyimsin   6.2&nbsp;(3K)   2,964 2016
+232                   Bizim Büyük Çaresizligimiz   6.8&nbsp;(4K)   4,015 2011
+233                     Patron Mutlu Son Istiyor 6.0&nbsp;(7.1K)   7,138 2014
+234                      Entelköy Efeköy'e Karsi 6.6&nbsp;(3.6K)   3,629 2011
+235                          Niyazi Gül Dörtnala 4.5&nbsp;(3.5K)   3,451 2015
+236                                 Içimdeki Ses 5.9&nbsp;(3.6K)   3,567 2015
+237                                Hadi Insallah 5.4&nbsp;(4.3K)   4,302 2014
+238                           Çalgi Çengi Ikimiz 5.6&nbsp;(4.9K)   4,858 2017
+239                              Romantik Komedi 5.3&nbsp;(5.3K)   5,344 2010
+240           Çakallarla Dans 2: Hastasiyiz Dede   4.6&nbsp;(4K)   3,950 2012
+241                                        Açela 2.7&nbsp;(2.7K)   2,670 2020
+242                               Kod Adi K.O.Z.  1.7&nbsp;(28K)  27,602 2015
+243                           Resistance Is Life 7.7&nbsp;(3.3K)   3,297 2017
+244                             Alamet-i Kiyamet 4.7&nbsp;(2.7K)   2,657 2016
+245                            15/07 Safak Vakti  1.2&nbsp;(21K)  20,606 2021
+246                               Deniz ve Günes 4.9&nbsp;(2.6K)   2,639 2018
+247                Sihirbazlik Okulunda Bir Türk 1.7&nbsp;(3.7K)   3,699 2015
+248                           Guardian of Angels 7.2&nbsp;(2.6K)   2,565 2018
+249                        Nefes: Vatan Sagolsun  8.0&nbsp;(35K)  34,998 2009
+250                               Babam ve Oglum  8.2&nbsp;(91K)  91,008 2005
+251                                    Masumiyet  8.1&nbsp;(19K)  19,258 1997
+252                                        Kader  7.8&nbsp;(16K)  16,219 2006
+253                                         Uzak  7.5&nbsp;(22K)  22,357 2002
+254                                       Eskiya  8.1&nbsp;(72K)  71,692 1996
+255                                      A.R.O.G  7.3&nbsp;(45K)  44,620 2008
+256                                Sevmek Zamani 8.0&nbsp;(7.1K)   7,116 1965
+257                               Hababam Sinifi  9.2&nbsp;(43K)  42,505 1975
+258                                    Üç Maymun  7.3&nbsp;(23K)  22,640 2008
+259                                        Barda  7.0&nbsp;(15K)  14,676 2007
+260                                     G.O.R.A.  8.0&nbsp;(66K)  66,015 2004
+261                                     Kabadayi  7.8&nbsp;(24K)  23,622 2007
+262                                        Yazgi 7.5&nbsp;(6.7K)   6,702 2001
+263                                   Issiz Adam  6.8&nbsp;(22K)  22,324 2008
+264                         Kurtlar Vadisi: Irak  5.7&nbsp;(18K)  18,250 2006
+265                                          Yol  8.0&nbsp;(14K)  14,301 1982
+266                                   Yahsi Bati  7.4&nbsp;(38K)  37,770 2009
+267                                        D@bbe 4.3&nbsp;(4.7K)   4,733 2006
+268                                     Iklimler  7.1&nbsp;(14K)  13,993 2006
+269                                    Vizontele  8.0&nbsp;(38K)  38,393 2001
+270                     Her Sey Çok Güzel Olacak  8.1&nbsp;(27K)  27,111 1998
+271                                       Pardon  8.1&nbsp;(23K)  22,659 2005
+272                        Dünyayi Kurtaran Adam   4.4&nbsp;(8K)   8,014 1982
+273                                   Tosun Pasa  8.9&nbsp;(24K)  24,325 1976
+274                                Bekleme Odasi 6.3&nbsp;(3.2K)   3,156 2003
+275                                   Agir Roman  7.6&nbsp;(12K)  11,718 1997
+276                             Tabutta Rövasata  7.7&nbsp;(11K)  10,845 1996
+277                               Organize Isler  7.4&nbsp;(35K)  35,013 2005
+278                                       Gemide  7.9&nbsp;(16K)  15,713 1998
+279                     Selvi Boylum Al Yazmalim  8.5&nbsp;(17K)  16,719 1977
+280                                       Itiraf 7.0&nbsp;(3.9K)   3,911 2001
+281                Dünyayi Kurtaran Adam'in Oglu  1.5&nbsp;(17K)  16,704 2006
+282                                 Üçüncü Sayfa 7.3&nbsp;(4.3K)   4,255 1999
+283                             Neredesin Firuze  7.4&nbsp;(12K)  12,396 2004
+284                             Saban Oglu Saban  8.7&nbsp;(19K)  18,533 1977
+285                              Mayis Sikintisi 7.3&nbsp;(6.6K)   6,625 1999
+286               Deli Yürek: Bumerang Cehennemi 6.5&nbsp;(4.1K)   4,119 2001
+287                                    Kolpaçino  6.5&nbsp;(14K)  13,648 2009
+288                                    Susuz Yaz 7.8&nbsp;(5.5K)   5,488 1963
+289                                 Recep Ivedik  4.8&nbsp;(28K)  28,349 2008
+290                                 Günesin Oglu 7.0&nbsp;(6.1K)   6,056 2008
+291                                       Kasaba 7.0&nbsp;(6.4K)   6,417 1997
+292                                      D@bbe 2 3.0&nbsp;(2.7K)   2,662 2009
+293                                        Sinav  6.6&nbsp;(11K)  11,250 2006
+294                                Günesi Gördüm  6.6&nbsp;(11K)  10,571 2009
+295                               Çöpçüler Krali  8.5&nbsp;(21K)  21,178 1977
+296                                      Yumurta 6.6&nbsp;(5.6K)   5,592 2007
+297                              Baska Dilde Ask 7.3&nbsp;(7.1K)   7,087 2009
+298                                    Kiskanmak 6.5&nbsp;(3.5K)   3,455 2009
+299   Muro: Nalet Olsun Içimdeki Insan Sevgisine 3.9&nbsp;(3.2K)   3,211 2008
+300                                       Vavien  7.5&nbsp;(13K)  13,498 2009
+301                               Recep Ivedik 2  4.5&nbsp;(22K)  22,327 2009
+302                                       C Blok 6.1&nbsp;(3.4K)   3,361 1994
+303                                 Gönül Yarasi  7.8&nbsp;(10K)  10,404 2005
+304                       Kurtlar Vadisi: Gladio 6.2&nbsp;(5.3K)   5,288 2009
+305                                Aaahh Belinda 7.8&nbsp;(3.5K)   3,497 1986
+306                                     Hokkabaz  7.4&nbsp;(34K)  34,166 2006
+307                                   Zügürt Aga  8.7&nbsp;(16K)  16,132 1985
+308                                     Sonbahar 7.7&nbsp;(6.7K)   6,736 2008
+309                                   Üç Kagitçi 7.7&nbsp;(6.1K)   6,089 1981
+310                                   Muhsin Bey  8.4&nbsp;(12K)  11,507 1987
+311                               Anlat Istanbul 7.3&nbsp;(6.9K)   6,863 2005
+312                                        Duvar 8.0&nbsp;(4.4K)   4,382 1983
+313                              Merakli Köfteci 7.2&nbsp;(4.2K)   4,199 1976
+314                                       Salako 7.4&nbsp;(6.4K)   6,437 1974
+315                             Çarikli Milyoner 6.7&nbsp;(3.3K)   3,313 1983
+316             Karpuz Kabugundan Gemiler Yapmak 7.8&nbsp;(6.5K)   6,459 2004
+317                                Neseli Günler  8.7&nbsp;(12K)  11,803 1978
+318                                Anayurt Oteli 7.5&nbsp;(4.4K)   4,442 1987
+319                                        Zübük  8.5&nbsp;(11K)  10,560 1980
+320                                       Kosmos 7.1&nbsp;(5.1K)   5,129 2009
+321                                Süt Kardesler  8.8&nbsp;(21K)  20,882 1976
+322                                          120   7.2&nbsp;(7K)   7,029 2008
+323                                  Kibar Feyzo  8.7&nbsp;(17K)  17,124 1978
+324                                         Sürü 8.2&nbsp;(5.3K)   5,256 1978
+325                                          Gen 4.2&nbsp;(3.6K)   3,640 2006
+326                              7 Kocali Hürmüz 6.3&nbsp;(5.8K)   5,817 2009
+327                                 Kahpe Bizans 5.9&nbsp;(7.5K)   7,506 1999
+328                               En Büyük Saban   6.7&nbsp;(3K)   3,026 1984
+329                                   Propaganda  7.1&nbsp;(10K)  10,023 1999
+330                                     Mutluluk 7.5&nbsp;(7.8K)   7,795 2007
+331                                  Gölge Oyunu 7.7&nbsp;(3.7K)   3,715 1993
+332                                Tatar Ramazan 7.9&nbsp;(3.4K)   3,386 1990
+333                                  Beynelmilel 7.2&nbsp;(8.1K)   8,139 2006
+334                               Çilgin Dersane 1.9&nbsp;(3.9K)   3,899 2007
+335                                    Yazi Tura 7.6&nbsp;(6.5K)   6,489 2004
+336                             Devrim Arabalari  8.0&nbsp;(13K)  12,603 2008
+337                 Hababam Sinifi Sinifta Kaldi  8.9&nbsp;(24K)  24,366 1975
+338                                 Tatli Dillim 7.1&nbsp;(2.8K)   2,805 1972
+339                               Vesikali Yarim 7.9&nbsp;(3.2K)   3,249 1968
+340                              Kutsal Damacana 5.1&nbsp;(9.8K)   9,840 2007
+341                                Sari Mercedes 7.8&nbsp;(3.2K)   3,201 1993
+342                                 Egreti Gelin 6.2&nbsp;(3.1K)   3,139 2005
+343                               Canim Kardesim  8.6&nbsp;(10K)  10,093 1973
+344                  Dar Alanda Kisa Paslasmalar 7.3&nbsp;(3.3K)   3,273 2000
+345                      Mustafa Hakkinda Hersey 7.5&nbsp;(9.7K)   9,737 2004
+346                                     Musallat 5.9&nbsp;(4.3K)   4,348 2007
+347                                  Güz Sancisi 6.1&nbsp;(2.6K)   2,553 2009
+348                                Küçük Kiyamet 6.3&nbsp;(2.6K)   2,625 2006
+349             Hacivat Karagöz Neden Öldürüldü?  7.5&nbsp;(13K)  13,074 2006
+350                                  Beyaz Melek 6.5&nbsp;(7.3K)   7,336 2007
+351                                         Umut 8.0&nbsp;(4.2K)   4,242 1970
+352                        Uçurtmayi Vurmasinlar 8.3&nbsp;(7.1K)   7,075 1989
+353                              Vizontele Tuuba  6.5&nbsp;(16K)  16,371 2003
+354                              Korkusuz Korkak 8.1&nbsp;(7.2K)   7,215 1979
+355                                    Ah Nerede 7.6&nbsp;(4.8K)   4,759 1975
+356                                      Tokatçi 7.7&nbsp;(6.2K)   6,174 1983
+357              Maskeli Besler: Intikam Pesinde 4.4&nbsp;(6.1K)   6,055 2005
+358                   Azize: Bir Laleli Hikayesi 6.9&nbsp;(3.6K)   3,639 1999
+359                                          Süt 6.6&nbsp;(3.3K)   3,314 2008
+360                                 Neseli Hayat 6.1&nbsp;(7.5K)   7,522 2009
+361                       Hababam Sinifi Tatilde  8.6&nbsp;(19K)  18,634 1977
+362                                       Insaat   7.2&nbsp;(4K)   4,024 2003
+363                                      Arabesk 8.0&nbsp;(8.3K)   8,299 1989
+364                          Köyden Indim Sehire  8.3&nbsp;(12K)  11,644 1974
+365                Istanbul Kanatlarimin Altinda 7.0&nbsp;(3.8K)   3,817 1996
+366                                  Aile Serefi 8.0&nbsp;(3.8K)   3,789 1976
+367                         Maskeli Besler: Irak 3.8&nbsp;(5.3K)   5,253 2007
+368                                      Mustafa 6.7&nbsp;(2.8K)   2,844 2008
+369          Ask Filmlerinin Unutulmaz Yönetmeni 7.6&nbsp;(4.2K)   4,239 1990
+370                    Turist Ömer Uzay Yolu'nda 7.2&nbsp;(3.6K)   3,635 1973
+371                                         Okul 4.1&nbsp;(3.6K)   3,630 2004
+372                                  Mavi Boncuk 7.8&nbsp;(9.6K)   9,550 1975
+373                                  Banker Bilo 7.6&nbsp;(7.4K)   7,351 1980
+374                                         Büyü 3.0&nbsp;(3.9K)   3,921 2004
+375                                    Bes Vakit 7.3&nbsp;(4.4K)   4,371 2006
+376                                        Semum   5.0&nbsp;(4K)   4,026 2008
+377                   Keloglan Karaprens'e Karsi 1.6&nbsp;(9.6K)   9,615 2006
+378                              Çiplak Vatandas 7.5&nbsp;(4.9K)   4,935 1985
+379                               O... Çocuklari 6.4&nbsp;(5.4K)   5,445 2008
+380                      Hababam Sinifi Uyaniyor  8.7&nbsp;(21K)  20,637 1976
+381                                  Çiçek Abbas  8.0&nbsp;(11K)  11,019 1982
+382                              Kapicilar Krali  8.4&nbsp;(13K)  13,356 1976
+383                                 Gülen Gözler 8.4&nbsp;(7.6K)   7,589 1977
+384                                    Hayat Var 7.3&nbsp;(3.4K)   3,430 2008
+385                           Pandora'nin Kutusu 7.2&nbsp;(2.9K)   2,938 2008
+386                                        Polis 6.6&nbsp;(6.2K)   6,232 2007
+387                      Hababam Sinifi Üç Buçuk 3.0&nbsp;(8.7K)   8,695 2005
+388                                       Yoksul   7.3&nbsp;(3K)   3,000 1986
+389                       Son Osmanli Yandim Ali 6.9&nbsp;(6.8K)   6,801 2007
+390                                   Bizim Aile 8.4&nbsp;(7.2K)   7,211 1975
+391                                  Kanli Nigar 7.1&nbsp;(3.4K)   3,403 1981
+392                                 11'e 10 Kala 7.2&nbsp;(2.8K)   2,791 2009
+393                               Doktor Civanim 6.9&nbsp;(4.1K)   4,067 1983
+394                           Davaro: Son Eskiya 8.1&nbsp;(9.2K)   9,202 1981
+395                                 Kaç Para Kaç 7.5&nbsp;(3.7K)   3,708 1999
+396                                         Vali 7.3&nbsp;(4.9K)   4,946 2009
+397                             Dondurmam Gaymak 6.6&nbsp;(6.5K)   6,540 2006
+398                              Yedi Bela Hüsnü 7.7&nbsp;(7.5K)   7,474 1983
+399                     Hababam Sinifi Güle Güle 6.3&nbsp;(6.2K)   6,184 1981
+400                                  Devlet Kusu 6.9&nbsp;(2.6K)   2,577 1980
+401                                   Gülen Adam 6.9&nbsp;(4.1K)   4,111 1990
+402                                      Fasulye 7.2&nbsp;(2.6K)   2,601 2000
+403                              Korkuyorum Anne 7.5&nbsp;(3.3K)   3,290 2004
+404                                Düttürü Dünya   7.3&nbsp;(3K)   2,997 1988
+405                          Beyza'nin Kadinlari 6.2&nbsp;(2.8K)   2,766 2006
+406                                         Araf 2.4&nbsp;(4.3K)   4,276 2006
+407                       Hababam Sinifi Askerde 3.3&nbsp;(7.8K)   7,786 2005
+408                          Osmanli Cumhuriyeti 5.2&nbsp;(7.2K)   7,218 2008
+409                                     Ögretmen 7.2&nbsp;(2.6K)   2,617 1988
+410                             Deli Deli Küpeli 7.3&nbsp;(3.7K)   3,726 1986
+411                                       Davaci 7.1&nbsp;(3.4K)   3,419 1987
+412                                       Sultan 7.5&nbsp;(3.8K)   3,829 1978
+413                                        Garip 7.1&nbsp;(4.3K)   4,270 1986
+414                                  Sakar Sakir 8.0&nbsp;(8.9K)   8,948 1977
+415                               Salak Milyoner 7.9&nbsp;(7.8K)   7,832 1974
+416                       Hababam Sinifi Merhaba   3.2&nbsp;(7K)   6,961 2004
+417                                Koltuk Belasi 7.0&nbsp;(2.6K)   2,631 1990
+418                                Salvar Davasi 7.1&nbsp;(2.7K)   2,712 1983
+419                              Filler ve Çimen 7.0&nbsp;(2.8K)   2,805 2000
+420                                Ask Tutulmasi   5.5&nbsp;(3K)   3,019 2008
+421                                O Simdi Asker 4.9&nbsp;(2.7K)   2,741 2003
+422                                     Sabaniye 6.2&nbsp;(3.7K)   3,707 1984
+423                          Sans Kapiyi Kirinca 6.3&nbsp;(4.7K)   4,660 2005
+424                                     Varyemez 6.6&nbsp;(2.8K)   2,819 1991
+425               Hababam Sinifi Dokuz Doguruyor 7.3&nbsp;(8.9K)   8,938 1978
+426                                      Kilibik 7.0&nbsp;(3.5K)   3,468 1983
+427                         On the Way to School 7.4&nbsp;(3.1K)   3,086 2008
+428                                    Sekerpare 7.9&nbsp;(6.7K)   6,745 1983
+429                                Sosyete Saban 6.9&nbsp;(3.5K)   3,528 1985
+430                                   Inek Saban 7.5&nbsp;(4.4K)   4,381 1978
+431                            Yüz Numarali Adam 7.7&nbsp;(5.9K)   5,932 1978
+432                                      Postaci 7.0&nbsp;(4.6K)   4,601 1984
+433                                        Hanzo 6.3&nbsp;(4.4K)   4,367 1975
+434                                      Namuslu 8.1&nbsp;(7.4K)   7,352 1984
+435                                       Kiraci 6.7&nbsp;(2.7K)   2,712 1987
+436                              Ortadirek Saban   7.2&nbsp;(5K)   4,954 1984
+437                            Katma Deger Saban 6.5&nbsp;(4.1K)   4,136 1985
+438                              Ne Olacak Simdi 7.5&nbsp;(3.2K)   3,247 1979
+439                                         Ulak 6.8&nbsp;(4.8K)   4,832 2008
+440                            Köseyi Dönen Adam   7.1&nbsp;(3K)   3,037 1978
+441                                 Gerzek Saban 7.1&nbsp;(3.1K)   3,138 1980
+442                  Son Ders: Ask ve Üniversite 6.9&nbsp;(2.6K)   2,561 2008
+443                     Emret Komutanim: Sah Mat   1.5&nbsp;(7K)   7,047 2007
+444                               Komser Sekspir 5.8&nbsp;(3.4K)   3,431 2000
+445                                   Talih Kusu 7.0&nbsp;(2.9K)   2,901 1989
+446                                 Tarzan Rifki 6.4&nbsp;(3.2K)   3,152 1986
+447                                    Gol Krali 6.8&nbsp;(3.9K)   3,933 1981
+448                                 Saskin Damat 6.8&nbsp;(2.7K)   2,736 1975
+449                                  Avanak Apti 6.9&nbsp;(4.5K)   4,460 1978
+450                                    Milyarder 7.5&nbsp;(4.6K)   4,553 1987
+451                                     Oh Olsun 7.2&nbsp;(3.2K)   3,218 1974
+452                                  Hirsiz Var! 4.4&nbsp;(3.3K)   3,258 2005
+453                                    Japon Isi 6.1&nbsp;(3.8K)   3,782 1987
+454                             Selamsiz Bandosu 7.7&nbsp;(3.9K)   3,902 1988
+455                               Gurbetçi Saban 6.5&nbsp;(3.3K)   3,284 1985
+456                           Saban Pabucu Yarim   6.4&nbsp;(3K)   2,971 1985
+457                                Dolap Beygiri 7.2&nbsp;(2.7K)   2,677 1982
+458                               Sahte Kabadayi 7.6&nbsp;(6.3K)   6,251 1976
+459                               Bekçiler Krali 7.6&nbsp;(6.6K)   6,576 1979
+460                               Atla Gel Saban 7.6&nbsp;(5.1K)   5,134 1984
+461                                 Uzak Ihtimal 7.0&nbsp;(2.7K)   2,735 2009
+462                               Umudumuz Saban 7.1&nbsp;(3.6K)   3,582 1979
+463                       Maskeli Besler: Kibris 3.1&nbsp;(5.6K)   5,550 2008
+464                      Erkek Güzeli Sefil Bilo 6.9&nbsp;(2.7K)   2,710 1979
+465                                 Sark Bülbülü 7.5&nbsp;(4.3K)   4,347 1979
+466                          Dokunmayin Sabanima 7.2&nbsp;(4.1K)   4,090 1979
+467                                Sen Dul Saban 6.5&nbsp;(2.7K)   2,710 1986
+468                              Iyi Aile Çocugu   7.1&nbsp;(3K)   3,026 1978
+469                               Kanal-i-zasyon 5.0&nbsp;(3.9K)   3,907 2009
+470                             Ibo ile Güllüsah 6.1&nbsp;(3.5K)   3,498 1977
+    duration
+1     3h 17m
+2     1h 31m
+3     2h 12m
+4     1h 57m
+5     1h 53m
+6     1h 47m
+7     3h 16m
+8     2h 15m
+9     1h 54m
+10     2h 5m
+11     2h 9m
+12     3h 8m
+13    2h 37m
+14    2h 14m
+15    1h 37m
+16    1h 19m
+17    1h 44m
+18    2h 16m
+19    1h 56m
+20    2h 25m
+21    1h 52m
+22    1h 30m
+23     2h 4m
+24    1h 52m
+25    2h 45m
+26    1h 46m
+27    1h 50m
+28    1h 45m
+29     2h 9m
+30    1h 26m
+31    1h 37m
+32    1h 36m
+33    1h 37m
+34    1h 49m
+35    1h 41m
+36    1h 45m
+37    1h 47m
+38    1h 59m
+39    2h 19m
+40     2h 4m
+41    1h 36m
+42    2h 18m
+43    2h 10m
+44    1h 45m
+45    2h 31m
+46     2h 6m
+47    2h 21m
+48    1h 45m
+49    1h 44m
+50    2h 22m
+51    1h 52m
+52     2h 1m
+53        2h
+54    2h 13m
+55    1h 55m
+56    2h 20m
+57    1h 57m
+58    1h 33m
+59    1h 41m
+60    1h 47m
+61    2h 16m
+62    1h 55m
+63    1h 34m
+64    1h 58m
+65    2h 13m
+66    2h 14m
+67    1h 57m
+68    1h 49m
+69    1h 45m
+70    1h 46m
+71    1h 53m
+72    1h 36m
+73     2h 1m
+74    1h 33m
+75     2h 5m
+76    1h 25m
+77    1h 53m
+78    1h 48m
+79    1h 46m
+80    1h 54m
+81     2h 1m
+82    1h 44m
+83    1h 53m
+84    1h 52m
+85    1h 40m
+86    1h 39m
+87    1h 38m
+88    1h 50m
+89    1h 58m
+90     2h 6m
+91        2h
+92    1h 48m
+93    1h 57m
+94    1h 44m
+95    1h 59m
+96    1h 32m
+97    1h 45m
+98    1h 36m
+99    2h 40m
+100   1h 52m
+101   1h 40m
+102   1h 55m
+103   1h 35m
+104       2h
+105       1h
+106   1h 42m
+107   1h 50m
+108   1h 58m
+109   1h 40m
+110   1h 52m
+111       1h
+112   1h 44m
+113   1h 53m
+114    2h 5m
+115   1h 50m
+116   1h 35m
+117    2h 6m
+118   1h 55m
+119   1h 46m
+120   1h 49m
+121   1h 46m
+122   1h 46m
+123   1h 37m
+124   1h 32m
+125   1h 55m
+126   1h 52m
+127   1h 50m
+128   1h 44m
+129    2h 4m
+130   1h 45m
+131   1h 50m
+132   1h 41m
+133   1h 31m
+134   1h 54m
+135       1h
+136   1h 54m
+137   1h 44m
+138   1h 30m
+139   1h 39m
+140   1h 56m
+141       1h
+142   1h 35m
+143   1h 40m
+144   1h 53m
+145   1h 56m
+146   1h 54m
+147   1h 48m
+148   1h 44m
+149   1h 46m
+150   1h 48m
+151   1h 55m
+152   1h 54m
+153    2h 4m
+154       2h
+155   1h 54m
+156   1h 59m
+157   1h 43m
+158   1h 51m
+159   1h 50m
+160   1h 57m
+161   1h 43m
+162   1h 52m
+163   1h 45m
+164   1h 47m
+165   1h 36m
+166   1h 46m
+167   1h 50m
+168   1h 38m
+169   1h 30m
+170   1h 41m
+171   1h 46m
+172   1h 42m
+173   1h 59m
+174   1h 38m
+175   1h 42m
+176   1h 43m
+177    2h 5m
+178    2h 6m
+179   1h 46m
+180   1h 45m
+181   1h 43m
+182   1h 50m
+183   1h 30m
+184   1h 45m
+185   1h 45m
+186   1h 45m
+187   1h 53m
+188    2h 5m
+189   1h 40m
+190   2h 30m
+191   1h 54m
+192   1h 54m
+193   1h 35m
+194    2h 7m
+195   1h 45m
+196   1h 35m
+197   1h 34m
+198   1h 45m
+199      48m
+200   1h 40m
+201   1h 54m
+202   1h 37m
+203   1h 41m
+204   1h 45m
+205       2h
+206   1h 33m
+207   1h 39m
+208   2h 43m
+209   1h 37m
+210   1h 42m
+211   1h 56m
+212   1h 47m
+213   1h 44m
+214   1h 30m
+215   1h 58m
+216   1h 38m
+217   1h 40m
+218   1h 36m
+219   1h 49m
+220   1h 48m
+221   1h 48m
+222    2h 6m
+223   1h 44m
+224   1h 30m
+225   1h 30m
+226   1h 49m
+227   1h 58m
+228   1h 42m
+229   1h 33m
+230       2h
+231   1h 47m
+232   1h 42m
+233   1h 49m
+234   1h 51m
+235   1h 46m
+236   1h 33m
+237   1h 36m
+238   1h 56m
+239   1h 35m
+240   1h 41m
+241   1h 10m
+242   1h 54m
+243   1h 13m
+244   1h 28m
+245   1h 35m
+246   1h 36m
+247   1h 31m
+248      56m
+249    2h 8m
+250   1h 48m
+251   1h 50m
+252   1h 43m
+253   1h 50m
+254    2h 8m
+255    2h 7m
+256   1h 26m
+257   1h 27m
+258   1h 49m
+259   1h 32m
+260    2h 7m
+261   2h 20m
+262   1h 59m
+263   1h 53m
+264    2h 2m
+265   1h 47m
+266   1h 52m
+267   1h 50m
+268   1h 37m
+269   1h 50m
+270   1h 47m
+271   1h 39m
+272   1h 31m
+273   1h 30m
+274   1h 32m
+275       2h
+276   1h 15m
+277   1h 46m
+278   1h 42m
+279   1h 30m
+280   1h 40m
+281   1h 50m
+282   1h 32m
+283    2h 8m
+284   1h 30m
+285   2h 10m
+286    2h 3m
+287   1h 38m
+288   1h 30m
+289   1h 30m
+290   1h 29m
+291   1h 25m
+292   1h 25m
+293       2h
+294       2h
+295   1h 20m
+296   1h 37m
+297   1h 38m
+298   1h 36m
+299   1h 30m
+300   1h 40m
+301   1h 47m
+302   1h 32m
+303   2h 22m
+304   1h 37m
+305   1h 40m
+306    2h 2m
+307   1h 41m
+308   1h 39m
+309   1h 28m
+310   1h 59m
+311   1h 39m
+312   1h 57m
+313   1h 15m
+314   1h 27m
+315   1h 26m
+316   1h 37m
+317   1h 35m
+318   1h 41m
+319   1h 28m
+320    2h 2m
+321   1h 20m
+322   1h 54m
+323   1h 23m
+324   1h 57m
+325   1h 45m
+326    2h 2m
+327   1h 37m
+328   1h 33m
+329       2h
+330   1h 45m
+331   1h 43m
+332   1h 35m
+333   1h 46m
+334   1h 40m
+335   1h 42m
+336       2h
+337   1h 35m
+338   1h 34m
+339   1h 29m
+340   1h 45m
+341   1h 30m
+342   1h 55m
+343   1h 25m
+344       2h
+345   1h 59m
+346   1h 35m
+347   1h 52m
+348   1h 30m
+349   2h 15m
+350   1h 55m
+351   1h 40m
+352   1h 25m
+353   1h 51m
+354   1h 17m
+355   1h 30m
+356   1h 23m
+357   1h 29m
+358   1h 25m
+359   1h 42m
+360   1h 40m
+361   1h 37m
+362   1h 53m
+363   1h 32m
+364   1h 31m
+365   1h 59m
+366   1h 35m
+367   1h 44m
+368   2h 10m
+369   1h 46m
+370   1h 12m
+371   1h 40m
+372   1h 16m
+373   1h 25m
+374   1h 35m
+375   1h 51m
+376   1h 56m
+377   1h 45m
+378   1h 14m
+379       2h
+380   1h 34m
+381   1h 27m
+382   1h 24m
+383   1h 37m
+384    2h 1m
+385   1h 52m
+386   1h 53m
+387   1h 38m
+388   1h 17m
+389    2h 6m
+390   1h 32m
+391   1h 21m
+392   1h 50m
+393   1h 27m
+394   1h 34m
+395   1h 40m
+396   1h 33m
+397   1h 40m
+398   1h 24m
+399   1h 21m
+400   1h 19m
+401   1h 31m
+402   1h 45m
+403    2h 8m
+404   1h 31m
+405   2h 17m
+406   1h 37m
+407   1h 52m
+408   1h 40m
+409   1h 29m
+410   1h 27m
+411   1h 19m
+412   1h 28m
+413   1h 36m
+414   1h 21m
+415   1h 24m
+416   1h 58m
+417   1h 25m
+418   1h 30m
+419   1h 55m
+420   1h 39m
+421    2h 5m
+422   1h 33m
+423   1h 47m
+424   1h 33m
+425   1h 28m
+426   1h 25m
+427   1h 21m
+428   1h 30m
+429   1h 32m
+430   1h 11m
+431   1h 19m
+432   1h 27m
+433   1h 17m
+434   1h 33m
+435   1h 34m
+436   1h 22m
+437   1h 25m
+438   1h 23m
+439   1h 49m
+440   1h 22m
+441   1h 16m
+442   1h 39m
+443   1h 40m
+444   1h 53m
+445   1h 32m
+446   1h 23m
+447   1h 21m
+448   1h 18m
+449   1h 26m
+450   1h 36m
+451   1h 26m
+452   1h 36m
+453   1h 29m
+454   1h 47m
+455   1h 27m
+456   1h 33m
+457   1h 30m
+458   1h 17m
+459   1h 22m
+460   1h 23m
+461   1h 30m
+462   1h 23m
+463   1h 27m
+464    1h 7m
+465   1h 29m
+466   1h 19m
+467   1h 34m
+468   1h 19m
+469   1h 53m
+470   1h 28m</code></pre>
 </div>
 </div>
 

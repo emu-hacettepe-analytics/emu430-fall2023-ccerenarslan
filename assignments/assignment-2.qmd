@@ -7,3 +7,59 @@ title: "Assignment 2"
 ```{r}
 1 + 1
 ```
+
+Codes for web scrapping
+
+```{r}
+library(tidyverse) # for everything :)
+library(rvest) # for HTML scraping
+library(stringr) #
+url1<-"https://m.imdb.com/search/title/?title_type=feature&release_date=2010-01-01,2023-12-31&num_votes=2500,&country_of_origin=TR&count=250"
+read<-read_html(url1)
+title_names <- html_nodes(read,'.ipc-title__text')
+title_names <- html_text(title_names)
+title_names <- tail(head(title_names,-1),-1)
+title_names <- str_split(title_names, " ", n=2)
+title_names <- unlist(lapply(title_names, function(x) {x[2]}))
+rate<- html_nodes(read,'.ratingGroup--imdb-rating')
+rate<- html_text(rate)
+year<-html_nodes(read,'.sc-43986a27-8.jHYIIK.dli-title-metadata-item:nth-child(1)')
+year <- html_text(year)
+duration<-html_nodes(read,'.sc-43986a27-8.jHYIIK.dli-title-metadata-item:nth-child(2)')
+duration<- html_text(duration)
+votes<-html_nodes(read,'.kRnqtn')
+votes<- html_text(votes)
+url2<-"https://m.imdb.com/search/title/?title_type=feature&release_date=,2009-12-31&num_votes=2500,&country_of_origin=TR&count=250"
+read<-read_html(url2)
+title_names2 <-  html_nodes(read,'.ipc-title__text')
+title_names2 <- html_text(title_names2)
+title_names2 <- tail(head(title_names2,-1),-1)
+title_names2 <- str_split(title_names2, " ", n=2)
+title_names2 <- unlist(lapply(title_names2, function(x) {x[2]}))
+rate2<- html_nodes(read,'.ratingGroup--imdb-rating')
+rate2<- html_text(rate2)
+year2<-html_nodes(read,'.sc-43986a27-8.jHYIIK.dli-title-metadata-item:nth-child(1)')
+year2<- html_text(year2)
+duration2<-html_nodes(read,'.sc-43986a27-8.jHYIIK.dli-title-metadata-item:nth-child(2)')
+duration2<- html_text(duration2)
+votes2<-html_nodes(read,'.kRnqtn')
+votes2<- html_text(votes2)
+total_title<-c(title_names,title_names2)
+total_rate<-c(rate,rate2)
+total_year<-c(year,year2)
+total_duration<-c(duration,duration2)
+time_string <- total_duration
+hours <- as.numeric(gsub("[^0-9]", "", regmatches(time_string, regexpr("\\d+h", time_string))))
+minutes <- as.numeric(gsub("[^0-9]", "", regmatches(time_string, regexpr("\\d+m", time_string))))
+total_minutes <- hours * 60 + minutes
+cat("Equivalent minutes:", total_minutes, "m\n")
+print(total_minutes)
+#print(total_duration)
+totall_votes<-c(votes,votes2)
+original_string <- totall_votes
+numeric_part <- gsub("[^0-9,]", "", original_string)
+cat("Numeric part:", numeric_part, "\n")
+data<- data.frame(name=total_title,rate=total_rate,vote=numeric_part,year=total_year,duration=total_duration)
+print(data)
+
+```
